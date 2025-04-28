@@ -38,7 +38,7 @@ The hook can be configured through the following environment variables:
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/your-username/git-hook-ia-commit-reviewer.git ~/.git-hook-ia-reviewer
+git clone git@github.com:Tsugami/git-hook-ia-commit-reviewer.git ~/.git-hook-ia-reviewer
 ```
 
 2. Run the installation command:
