@@ -61,11 +61,10 @@ To remove the hook, run:
 cd ~/.git-hook-ia-reviewer && make uninstall
 ```
 
-   ```
-
 ## Troubleshooting
 
 To enable debug mode and see detailed logs:
+
 ```bash
 export COMMIT_REVIEWER_LOG_LEVEL=debug
 ```
