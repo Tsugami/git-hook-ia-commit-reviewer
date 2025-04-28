@@ -31,6 +31,7 @@ The hook can be configured through the following environment variables:
 - `COMMIT_REVIEWER_API_URL`: OpenAI API URL (default: "https://api.openai.com/v1/chat/completions")
 - `COMMIT_REVIEWER_LANGUAGE`: Language for AI responses (default: "en")
 - `COMMIT_REVIEWER_SKIP_AMEND`: Whether to skip validation on amend commits (default: "true")
+- `COMMIT_REVIEWER_SKIP_WIP`: Whether to skip validation on commits containing "wip" or "WIP" (default: "true")
 - `COMMIT_REVIEWER_LOG_LEVEL`: Log level (debug, info, error) (default: "info")
 
 ## Installation

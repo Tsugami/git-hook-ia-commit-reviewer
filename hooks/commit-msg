@@ -81,6 +81,10 @@ log_debug "Commit message file: $COMMIT_MSG_FILE"
 COMMIT_REVIEWER_SKIP_AMEND=${COMMIT_REVIEWER_SKIP_AMEND:-"true"}
 log_debug "COMMIT_REVIEWER_SKIP_AMEND=$COMMIT_REVIEWER_SKIP_AMEND"
 
+# Default value for skip WIP validation
+COMMIT_REVIEWER_SKIP_WIP=${COMMIT_REVIEWER_SKIP_WIP:-"true"}
+log_debug "COMMIT_REVIEWER_SKIP_WIP=$COMMIT_REVIEWER_SKIP_WIP"
+
 # Default language for responses
 COMMIT_REVIEWER_LANGUAGE=${COMMIT_REVIEWER_LANGUAGE:-"en"}
 log_debug "COMMIT_REVIEWER_LANGUAGE=$COMMIT_REVIEWER_LANGUAGE"
@@ -109,6 +113,12 @@ log_debug "Cleaned commit message: $COMMIT_MSG"
 # If commit message is empty, exit successfully
 if [ -z "$COMMIT_MSG" ]; then
   log_info "Empty commit message, exiting"
+  exit 0
+fi
+
+# Check if commit message contains "wip" or "WIP" (case insensitive)
+if [ "$COMMIT_REVIEWER_SKIP_WIP" = "true" ] && echo "$COMMIT_MSG" | grep -qi "wip"; then
+  log_info "Commit message contains 'WIP', skipping validation"
   exit 0
 fi
 
