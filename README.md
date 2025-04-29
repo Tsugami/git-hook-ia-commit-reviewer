@@ -22,14 +22,14 @@ The hook will run automatically when you attempt to make a commit. It will:
 - `jq`
 - OpenAI API key
 
-
 ## Configuration
 
 The hook can be configured through the following environment variables:
 
 - `COMMIT_REVIEWER_API_KEY`: Your OpenAI API key (required)
-- `COMMIT_REVIEWER_API_URL`: OpenAI API URL (default: "https://api.openai.com/v1/chat/completions")
-- `COMMIT_REVIEWER_LANGUAGE`: Language for AI responses (default: "en")
+- `COMMIT_REVIEWER_API_URL`: OpenAI API URL (default: "<https://api.openai.com/v1/chat/completions>")
+- `COMMIT_REVIEWER_RESPONSE_LANGUAGE`: Language for AI responses (default: "en")
+- `COMMIT_REVIEWER_COMMIT_LANGUAGE`: Language for Commits (default: "en")
 - `COMMIT_REVIEWER_SKIP_AMEND`: Whether to skip validation on amend commits (default: "true")
 - `COMMIT_REVIEWER_SKIP_WIP`: Whether to skip validation on commits containing "wip" or "WIP" (default: "true")
 - `COMMIT_REVIEWER_LOG_LEVEL`: Log level (debug, info, error) (default: "info")
@@ -37,11 +37,13 @@ The hook can be configured through the following environment variables:
 ## Installation
 
 1. Clone this repository:
+
 ```bash
 git clone git@github.com:Tsugami/git-hook-ia-commit-reviewer.git ~/.git-hook-ia-reviewer
 ```
 
 2. Run the installation command:
+
 ```bash
 cd ~/.git-hook-ia-reviewer && make install
 ```
@@ -76,4 +78,4 @@ Contributions are welcome! Please feel free to open an issue or submit a pull re
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. 
+This project is licensed under the MIT License - see the [LICENSE](/LICENSE) file for details.

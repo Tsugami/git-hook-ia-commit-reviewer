@@ -3,6 +3,14 @@
 # Directory where Git stores global hooks
 GIT_HOOKS_DIR := $(shell git config --global core.hooksPath 2>/dev/null || echo "$(HOME)/.git-hooks")
 
+install: check-dependencies
+	@echo "Installing commit hook globally..."
+	@mkdir -p $(GIT_HOOKS_DIR)
+	@cp hooks/commit-msg $(GIT_HOOKS_DIR)/
+	@chmod +x $(GIT_HOOKS_DIR)/commit-msg
+	@git config --global core.hooksPath $(GIT_HOOKS_DIR)
+	@echo "Commit hook successfully installed at: $(GIT_HOOKS_DIR)"
+
 check-dependencies:
 	@echo "Checking dependencies..."
 	@if ! command -v jq >/dev/null 2>&1; then \
@@ -19,14 +27,6 @@ check-dependencies:
 		fi \
 	fi
 	@echo "All dependencies are installed."
-
-install: check-dependencies
-	@echo "Installing commit hook globally..."
-	@mkdir -p $(GIT_HOOKS_DIR)
-	@cp hooks/commit-msg $(GIT_HOOKS_DIR)/
-	@chmod +x $(GIT_HOOKS_DIR)/commit-msg
-	@git config --global core.hooksPath $(GIT_HOOKS_DIR)
-	@echo "Commit hook successfully installed at: $(GIT_HOOKS_DIR)"
 
 uninstall:
 	@echo "Removing global commit hook..."

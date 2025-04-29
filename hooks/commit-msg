@@ -86,8 +86,12 @@ COMMIT_REVIEWER_SKIP_WIP=${COMMIT_REVIEWER_SKIP_WIP:-"true"}
 log_debug "COMMIT_REVIEWER_SKIP_WIP=$COMMIT_REVIEWER_SKIP_WIP"
 
 # Default language for responses
-COMMIT_REVIEWER_LANGUAGE=${COMMIT_REVIEWER_LANGUAGE:-"en"}
-log_debug "COMMIT_REVIEWER_LANGUAGE=$COMMIT_REVIEWER_LANGUAGE"
+COMMIT_REVIEWER_RESPONSE_LANGUAGE=${COMMIT_REVIEWER_RESPONSE_LANGUAGE:-"en"}
+log_debug "COMMIT_REVIEWER_RESPONSE_LANGUAGE=$COMMIT_REVIEWER_RESPONSE_LANGUAGE"
+
+# Default language for commits
+COMMIT_REVIEWER_COMMIT_LANGUAGE=${COMMIT_REVIEWER_COMMIT_LANGUAGE:-"en"}
+log_debug "COMMIT_REVIEWER_COMMIT_LANGUAGE=$COMMIT_REVIEWER_COMMIT_LANGUAGE"
 
 # Default OpenAI API URL if not set
 COMMIT_REVIEWER_API_URL=${COMMIT_REVIEWER_API_URL:-"https://api.openai.com/v1/chat/completions"}
@@ -123,7 +127,7 @@ if [ "$COMMIT_REVIEWER_SKIP_WIP" = "true" ] && echo "$COMMIT_MSG" | grep -qi "wi
 fi
 
 # Default system prompts if not set
-COMMIT_REVIEWER_SYSTEM_PROMPT=${COMMIT_REVIEWER_SYSTEM_PROMPT:-"You are a helpful assistant that reviews Git commit messages. Review the following commit message based on the following criteria: 1. Check if it follows the Conventional Commits specification (type, scope, subject format). 2. Verify that the message is clear, concise, and written in correct English. 3. If the message does not meet these standards, suggest 2-3 alternative improved versions. 4. If the message is acceptable, explicitly approve it and explain why it's good. 5. Respond in $COMMIT_REVIEWER_LANGUAGE language."}
+COMMIT_REVIEWER_SYSTEM_PROMPT=${COMMIT_REVIEWER_SYSTEM_PROMPT:-"You are a helpful assistant that reviews Git commit messages. Review the following commit message based on the following criteria: 1. Check if it follows the Conventional Commits specification (type, scope, subject format). 2. Verify that the message is clear, concise, and written in correct $COMMIT_REVIEWER_COMMIT_LANGUAGE. 3. If the message does not meet these standards, suggest 2-3 alternative improved versions. 4. If the message is acceptable, explicitly approve it and explain why it's good. 5. Respond in $COMMIT_REVIEWER_RESPONSE_LANGUAGE language."}
 log_debug "Using system prompt"
 
 COMMIT_REVIEWER_FORMATTER_PROMPT=${COMMIT_REVIEWER_FORMATTER_PROMPT:-"You are a response formatter. Format the following review with these rules:
@@ -131,7 +135,7 @@ COMMIT_REVIEWER_FORMATTER_PROMPT=${COMMIT_REVIEWER_FORMATTER_PROMPT:-"You are a 
 2. If there are issues but they are minor, start with ⚠️ WARNING: followed by the issues and suggestions
 3. If there are serious issues, start with ❌ REJECTED: followed by the issues and suggestions
 4. Keep the original formatting and content, just add the appropriate prefix
-5. Respond in $COMMIT_REVIEWER_LANGUAGE language"}
+5. Respond in $COMMIT_REVIEWER_RESPONSE_LANGUAGE language"}
 log_debug "Using formatter prompt"
 
 # Use COMMIT_REVIEWER_API_KEY if set, otherwise fall back to OPENAI_API_KEY
@@ -152,7 +156,7 @@ JSON_PAYLOAD=$(cat <<EOF
   "model": "gpt-4",
   "messages": [
     {"role": "system", "content": "$ESCAPED_REVIEWER_PROMPT"},
-    {"role": "system", "content": "$ESCAPED_FORMATTER_PROMPT"},
+    {"role": "system", "content": "$ESCAPED_FORMATTER_PROMPT"}, 
     {"role": "user", "content": "$ESCAPED_MSG"}
   ],
   "temperature": 0.2
